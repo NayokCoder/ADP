@@ -8,54 +8,62 @@ const loadAlldata = async () => {
   // console.log(data.pets);
 
   displayAllData(data.pets);
-  sortByprice(data.pets);
 };
 
 const displayAllData = (pets) => {
   document.getElementById("spinner").classList.add("hidden");
   const petsContainer = document.getElementById("pets-container");
   petsContainer.innerHTML = "";
+
   pets.forEach((pet) => {
     const creatDiv = document.createElement("div");
     creatDiv.innerHTML = `
-        <div class="card bg-base-100  h-[470px] shadow-xl p-5">
-                  <figure  class="w- mb-6">
-                      <img   class="object-cover"
-                          src=${pet.image} alt="Shoes" />
-                  </figure>
+      <div class="card bg-base-100 h-[470px] shadow-xl p-5 flex flex-col">
+        <figure class="mb-6">
+          <img class="object-cover w-full h-40 md:h-48" src="${
+            pet.image || "default-image.jpg"
+          }" alt="${getValueOrDefault(pet.pet_name)}" />
+        </figure>
 
-                  <h2 class="text-2xl font-bold">${pet.pet_name}</h2>
-                  <div class="flex  items-center space-x-4 mt-2">
-                      <img class="w-5 h-5" src="images/icons8-menu-24.png" alt="">
-                      <h3 class="text-base font-normal">Breed: ${pet.breed}</h3>
-                  </div>
-                  <div class="flex  items-center space-x-4 mt-2">
-                      <img class="w-5 h-5" src="images/icons8-date-80.png" alt="">
-                      <h3 class="text-base font-normal">${
-                        pet.date_of_birth
-                      }</h3>
-                  </div>
-                  <div class="flex  items-center space-x-4 mt-2">
-                      <img class="w-5 h-5" src="images/icons8-gender-50.png" alt="">
-                      <h3 class="text-base font-normal">${pet.gender}</h3>
-                  </div>
-                  <div class="flex  items-center space-x-4 mt-2 mb-2">
-                      <img class="w-5 h-5" src="images/icons8-price-80.png" alt="">
-                      <h3 class="text-base font-normal">${pet.price + "$"}</h3>
-                  </div>
-                  <hr>
-                  <div class=" flex mt-4 justify-between">
-                      <button onclick="getImg('${
-                        pet.image
-                      }')" class="btn text-base font-bold txt-btn">Like</button>
-                     
-                      <button class="btn text-base font-bold txt-btn" onclick="openModalWithCountdown()">Adopt</button>
-                      <button onclick="showDetails('${
-                        pet.petId
-                      }')" class="btn text-base font-bold txt-btn">Details</button>
-                  </div>
-              </div>
-      `;
+        <h2 class="text-xl md:text-2xl font-bold">${getValueOrDefault(
+          pet.pet_name
+        )}</h2>
+        <div class="flex items-center space-x-2 mt-2">
+          <img class="w-5 h-5" src="images/icons8-menu-24.png" alt="">
+          <h3 class="text-sm md:text-base font-normal">Breed: ${getValueOrDefault(
+            pet.breed
+          )}</h3>
+        </div>
+        <div class="flex items-center space-x-2 mt-2">
+          <img class="w-5 h-5" src="images/icons8-date-80.png" alt="">
+          <h3 class="text-sm md:text-base font-normal">${getValueOrDefault(
+            pet.date_of_birth
+          )}</h3>
+        </div>
+        <div class="flex items-center space-x-2 mt-2">
+          <img class="w-5 h-5" src="images/icons8-gender-50.png" alt="">
+          <h3 class="text-sm md:text-base font-normal">${getValueOrDefault(
+            pet.gender
+          )}</h3>
+        </div>
+        <div class="flex items-center space-x-2 mt-2 mb-2">
+          <img class="w-5 h-5" src="images/icons8-price-80.png" alt="">
+          <h3 class="text-sm md:text-base font-normal">${
+            getValueOrDefault(pet.price) + "$"
+          }</h3>
+        </div>
+        <hr>
+        <div class="grid grid-cols-2 md:grid-cols-3 mt-4 justify-between">
+          <button onclick="getImg('${
+            pet.image
+          }')" class="btn text-base font-bold txt-btn flex-1 mr-1"><i class="fa-solid fa-thumbs-up fa-xl"></i></button>
+          <button id="disableb-btn" class="btn text-base font-bold txt-btn flex-1 mx-1" onclick="openModalWithCountdown()">Adopt</button>
+          <button onclick="showDetails('${
+            pet.petId
+          }')" class="btn text-base font-bold txt-btn col-span-2 md:col-auto mt-2 md:mt-0">Details</button>
+        </div>
+      </div>
+    `;
     petsContainer.appendChild(creatDiv);
   });
 };
@@ -76,13 +84,14 @@ const displayDataByCategory = (categories) => {
   categories.forEach((item) => {
     const categoryButton = document.createElement("button");
     categoryButton.className =
-      "w-[300px] h-[104px] p-6 border border-gray-400 rounded-2xl mb-4";
+      "w-5/12 max-w-[300px] h-auto p-4 md:p-6 border border-gray-400 rounded-2xl mb-4";
+
     categoryButton.onclick = () => ByCategory(item.category);
     categoryButton.innerHTML = `
-        <div class="flex justify-center items-center space-x-4">
-          <img class="w-14 h-14" src="${item.category_icon}" alt="${item.name}">
-          <h3 class="text-2xl font-bold">${item.category}</h3>
-        </div>
+        <div class="flex  md:flex-row justify-center items-center">
+    <img class="w-12 h-12 md:w-14 md:h-14" src="${item.category_icon}" alt="${item.name}">
+    <h3 class="text-xl md:text-2xl font-bold text-center md:text-left">${item.category}</h3>
+  </div>
       `;
 
     petsCategory.appendChild(categoryButton);
@@ -121,7 +130,6 @@ const getImg = (image) => {
       <img class="w-full h-auto object-cover" src="${image}" alt="Pet Image">
     </div>`;
 
-  // Append the dynamically created div to the sidePic container
   sidePic.appendChild(creatAsideDiv);
 };
 
@@ -130,7 +138,7 @@ const showDetails = async (petId) => {
     `https://openapi.programming-hero.com/api/peddy/pet/${petId}`
   );
   const data = await response.json();
-  const pet = data.petData; // Store the data
+  const pet = data.petData;
 
   const modalContainer = document.getElementById("modal-container");
 
@@ -185,45 +193,21 @@ const showDetails = async (petId) => {
     </dialog>
   `;
 
-  // Select the dynamically created modal and open it
   const modal = document.getElementById("my_modal_1");
   modal.showModal();
 };
 
-// Function to open the modal and start the countdown
-
-const openModalWithCountdown = () => {
-  const countdownModal = document.getElementById("countdown-modal");
-
-  // Update modalContainer with modal content dynamically
-  countdownModal.innerHTML = `
-    <dialog id="my_modal_2" class="modal">
-      <div class="modal-box">
-        <h3 class="text-lg font-bold">Hello!</h3>
-        <p class="py-4">
-          This modal will close in <span id="countdown">5</span> seconds.
-        </p>
-      </div>
-      <form method="dialog" class="modal-backdrop">
-        <button>Close</button>
-      </form>
-    </dialog>
-  `;
-
-  // Now reference the modal and countdown element after it is added to the DOM
+const openModalWithCountdown = (button) => {
+  button.disabled = true;
+  document.getElementById("countdown-modal");
   const modal = document.getElementById("my_modal_2");
   const countdownElement = document.getElementById("countdown");
-  let countdown = 5;
+  let countdown = 3;
 
-  // Show the modal
   modal.showModal();
-
-  // Start the countdown
   const interval = setInterval(() => {
     countdown--;
     countdownElement.textContent = countdown;
-
-    // Close modal when countdown reaches 0
     if (countdown === 0) {
       clearInterval(interval);
       modal.close();
@@ -233,6 +217,22 @@ const openModalWithCountdown = () => {
 
 // SHORT BY PRICE
 
-const sortByprice = () => {
-  console.log("hello");
+const sortByPrice = () => {
+  fetch("https://openapi.programming-hero.com/api/peddy/pets")
+    .then((response) => response.json())
+    .then((data) => {
+      const pets = data.pets;
+
+      const sortedPets = pets.sort((x, y) => {
+        if (x.price === null) return 1;
+        if (y.price === null) return -1;
+        return y.price - x.price;
+      });
+      displayAllData(sortedPets);
+    })
+    .catch((error) => console.error("Error fetching pets data:", error));
+};
+// Utility function to handle null or undefined values
+const getValueOrDefault = (value) => {
+  return value !== null && value !== undefined ? value : "No Available Data";
 };
