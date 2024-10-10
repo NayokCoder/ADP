@@ -5,7 +5,7 @@ const loadAlldata = async () => {
     `https://openapi.programming-hero.com/api/peddy/pets`
   );
   const data = await response.json();
-  // console.log(data.pets);
+  console.log(data.pets);
 
   displayAllData(data.pets);
 };
@@ -57,7 +57,8 @@ const displayAllData = (pets) => {
           <button onclick="getImg('${
             pet.image
           }')" class="btn text-base font-bold txt-btn flex-1 mr-1"><i class="fa-solid fa-thumbs-up fa-xl"></i></button>
-          <button id="disableb-btn" class="btn text-base font-bold txt-btn flex-1 mx-1" onclick="openModalWithCountdown()">Adopt</button>
+          <button id="disableb-btn" class="btn text-base font-bold txt-btn flex-1 mx-1" onclick="openModalWithCountdown(this)">Adopt</button>
+
           <button onclick="showDetails('${
             pet.petId
           }')" class="btn text-base font-bold txt-btn col-span-2 md:col-auto mt-2 md:mt-0">Details</button>
@@ -104,22 +105,37 @@ const ByCategory = async (category) => {
   const petsContainer = document.getElementById("pets-container");
   petsContainer.innerHTML = "";
   document.getElementById("spinner").classList.remove("hidden");
-  setTimeout(function () {
-    displayAllData(data.data);
-  }, 2500);
+
+  // Fetch category-wise data
   const response = await fetch(
     `https://openapi.programming-hero.com/api/peddy/category/${category}`
   );
   const data = await response.json();
+
+  document.getElementById("spinner").classList.add("hidden");
+
+  if (data.data.length === 0) {
+    // Display "No Data Found" message if no pets are found
+    petsContainer.innerHTML = `
+      <div class=" container mx-auto text-lg font-bold text-gray-500 h-80 border w-full rounded-2xl 
+        ">
+            <img class="mx-auto mt-5  " src="images/error.webp" alt="">
+            <p class="text-center"> No Data Available</p>
+        </div>  
+    `;
+  } else {
+    // Display pets data
+    displayAllData(data.data);
+  }
 };
 
 loadDataByCategory();
 
 loadAlldata();
-document.getElementById("sidePic").addEventListener("click", function (even) {
-  even.preventDefault();
-  console.log("helo");
-});
+// document.getElementById("sidePic").addEventListener("click", function (even) {
+//   even.preventDefault();
+//   console.log("helo");
+// });
 // ??????
 const getImg = (image) => {
   const sidePic = document.getElementById("sidePic");
@@ -127,7 +143,7 @@ const getImg = (image) => {
 
   creatAsideDiv.innerHTML = `
     <div class="">
-      <img class="w-full h-auto object-cover" src="${image}" alt="Pet Image">
+      <img class="w-full h-auto object-cover rounded-2xl" src="${image}" alt="Pet Image">
     </div>`;
 
   sidePic.appendChild(creatAsideDiv);
@@ -198,11 +214,11 @@ const showDetails = async (petId) => {
 };
 
 const openModalWithCountdown = (button) => {
-  button.disabled = true;
   document.getElementById("countdown-modal");
   const modal = document.getElementById("my_modal_2");
   const countdownElement = document.getElementById("countdown");
   let countdown = 3;
+  button.disabled = true;
 
   modal.showModal();
   const interval = setInterval(() => {
@@ -218,6 +234,12 @@ const openModalWithCountdown = (button) => {
 // SHORT BY PRICE
 
 const sortByPrice = () => {
+  const petsContainer = document.getElementById("pets-container");
+  petsContainer.innerHTML = "";
+  document.getElementById("spinner").classList.remove("hidden");
+  setTimeout(function () {
+    displayAllData(data.data);
+  }, 3000);
   fetch("https://openapi.programming-hero.com/api/peddy/pets")
     .then((response) => response.json())
     .then((data) => {
