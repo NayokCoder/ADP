@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.12/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/74d5f37364.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styel.css">
+
+    <title>Paddy Site</title>
+</head>
+
+<body class="lato">
+    <!-- NAV PART -->
+    <nav class="container mx-auto flex justify-around lg:justify-between     mt-14 items-center">
+        <div class="flex items-center bg-base-100 gap-2">
+            <img class="h-6 w-6" src="images/logo.webp" alt="Logo">
+            <a class="font-black text-3xl">Paddy</a>
+        </div>
+
+        <!-- HUMBURGER MENU  -->
+        <div class="lg:hidden">
+            <button id="menu-btn" class="btn btn-ghost btn-circle">
+                <i class="fa-solid fa-bars fa-2xl"></i>
+            </button>
+        </div>
+
+        <!-- MOBILE MENU -->
+        <div id="mobile-menu"
+            class="hidden absolute top-20 left-56 md:left-[480px] w-24 md:w-24 bg-base-100 lg:hidden rounded-2xl">
+            <ul class="menu menu-vertical px-1">
+                <li><a>Home</a></li>
+                <li><a>Shop</a></li>
+                <li><a>Contact</a></li>
+            </ul>
+        </div>
+
+        <!-- DESKTP MENU -->
+        <div class="hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+                <li><a>Home</a></li>
+                <li><a>Shop</a></li>
+                <li><a>Contact</a></li>
+            </ul>
+        </div>
+
+        <!-- MEN IOCN-->
+        <div class="btn btn-ghost btn-circle hidden lg:block">
+            <i class="fa-solid fa-user fa-bounce fa-2xl"></i>
+        </div>
+    </nav>
+
+    <!-- BANNER PART -->
+    <section class="container mx-auto mt-14 px-4">
+        <article>
+            <h3 class="text-gray-500 text-xl md:text-2xl font-bold text-center">Bringing Families Together ❤️‍🔥</h3>
+            <h1 class="text-4xl md:text-5xl lg:text-7xl font-black text-center md:w-8/12 w-full mx-auto">
+                Your Path to Adoption Starts Here
+            </h1>
+            <p class="text-sm md:text-xs font-normal text-center md:w-6/12 w-full mx-auto mt-4">
+                It is a long established fact that a reader will be distracted by the readable content of a page when
+                looking at its layout. The point of using Lorem Ipsum is that it has a.
+            </p>
+            <div class="flex justify-center mt-8 mb-12">
+                <button id="view-more-btn"
+                    class="btn btn-active btn-bg text-lg md:text-xl font-bold text-white hover:text-black">
+                    View More
+                </button>
+            </div>
+            <img class="mx-auto w-full md:w-auto" src="images/pet.webp" alt="Pet Image">
+        </article>
+    </section>
+
+    <!-- SORT BY PRICE -->
+    <section id="adopt-section">
+        <main>
+            <h3 class="text-2xl md:text-4xl font-bold text-center">Adopt Your Best Friend</h3>
+            <p class="text-sm md:text-xs font-normal text-center w-full md:w-4/12 mx-auto mt-4 md:mt-6">
+                It is a long established fact that a reader will be distracted by the readable content of a page when
+                looking at its layout. The point of using Lorem Ipsum is that it has a.
+            </p>
+            <!-- pet category button -->
+            <div id="pets-category"
+                class="container mx-auto mt-8 md:mt-14 flex justify-around lg:justify-between flex-wrap gap-2 md:gap-4 ">
+            </div>
+            <article
+                class="container mx-auto flex flex-col md:flex-row justify-around lg:justify-between items-center mt-8 ">
+                <h1 class="text-lg md:text-2xl font-black">Best Deal For You</h1>
+                <button onclick="sortByPrice()"
+                    class="btn btn-active btn-bg text-lg md:text-xl font-bold text-white hover:text-black mt-4 md:mt-0">
+                    Sort By Price
+                </button>
+            </article>
+        </main>
+    </section>
+
+    <!-- CARD PART  -->
+    <section class="container mx-auto flex justify-center gap-5 mt-8 mb-8 relative">
+        <!-- SPINNER -->
+        <span id="spinner" class="loading loading-bars loading-lg hidden absolute left-40 md:left-[450px] "></span>
+
+        <article id="pets-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-8/12 
+             md:w-9/12 gap-4 txt-color2  ">
+            <!-- PET CARD WILL HERE -->
+        </article>
+        <!-- CLICK IMG WILL HERE -->
+        <aside class="w-1/5 md:w-3/12 rounded-3xl border p-2">
+            <div id="sidePic" class="grid grid-cols-1 md:grid-cols-2 gap-3 ">
+                <!-- SIDE PICTURE  -->
+            </div>
+        </aside>
+    </section>
+    <!-- MODAL PART -->
+    <div id="modal-container">
+        <!-- MODAL WILL HERE -->
+    </div>
+
+    <!-- MODAL PART 2 -->
+    <div class="#countdown-modal">
+        <dialog id="my_modal_2" class="modal">
+            <div class="modal-box">
+                <img src="images/congrts.jpg" alt="">
+                <p class="text-xl font-black text-center mt-5 mb-5">Adoption process is starting for you</p>
+                <p id="countdown" class="text-5xl text-center font-black">3</p>
+            </div>
+            <form method="dialog" class="modal-backdrop">
+                <button>Close</button>
+            </form>
+        </dialog>
+    </div>
+    <!-- FOOTER PART -->
+    <footer class="footer-bg">
+        <div class="container mx-auto footer footer-bg txt-color p-6 md:p-10 flex flex-col md:flex-row justify-between">
+            <nav class="mb-6 md:mb-0">
+                <div class="flex items-center gap-2 mb-4">
+                    <img class="h-8 w-8" src="images/logo.webp" alt="Logo">
+                    <a class="font-black text-2xl md:text-3xl">Paddy</a>
+                </div>
+                <p class="link link-hover">Location: av. Washington 165, NY CA</p>
+                <p class="link link-hover">54003</p>
+                <p class="link link-hover">Phone: +31 85 964 47 25</p>
+                <p class="link link-hover">Email: info@yourdomain.com</p>
+                <nav class="mt-4">
+                    <div class="flex space-x-4">
+                        <a href="#" aria-label="Facebook">
+                            <i class="fa-brands fa-facebook fa-bounce fa-2xl"></i>
+                        </a>
+                        <a href="#" aria-label="Twitter">
+                            <i class="fa-brands fa-twitter fa-bounce fa-2xl"></i>
+                        </a>
+                        <a href="#" aria-label="YouTube">
+                            <i class="fa-brands fa-youtube fa-bounce fa-2xl"></i>
+                        </a>
+                    </div>
+                </nav>
+            </nav>
+
+            <nav class="mb-6 md:mb-0 ">
+                <h6 class="text-lg font-bold text-white mb-4">Useful Links</h6>
+                <p class="link link-hover">Home</p>
+                <p class="link link-hover">About Us</p>
+                <p class="link link-hover">Animals</p>
+                <p class="link link-hover">Foundation</p>
+                <p class="link link-hover">Contact</p>
+            </nav>
+
+            <nav>
+                <h6 class="text-lg font-bold text-white mb-4">Drop A Message</h6>
+                <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs mb-2" />
+                <button onclick="ByCategory()"
+                    class="btn btn-active btn-bg text-xl font-bold text-white hover:text-black w-full border-none">
+                    Subscribe
+                </button>
+            </nav>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+
+</html>
