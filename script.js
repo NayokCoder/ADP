@@ -4,6 +4,7 @@ const loadAlldata = async () => {
     `https://openapi.programming-hero.com/api/peddy/pets`
   );
   const data = await response.json();
+  // SET SPINNER
   const petsContainer = document.getElementById("pets-container");
   petsContainer.innerHTML = "";
   document.getElementById("spinner").classList.remove("hidden");
@@ -225,8 +226,6 @@ const openModalWithCountdown = (button) => {
   }, 1000);
 };
 
-// SHORT BY PRICE AND SPINER
-
 // SHORT BY PRICE AND SPINNER
 
 const sortByPrice = () => {
@@ -240,7 +239,7 @@ const sortByPrice = () => {
       .then((data) => {
         const pets = data.pets;
 
-        // Sort pets by price, handling null values
+        // SORT BY PRICE
         const sortedPets = pets.sort((x, y) => {
           if (x.price === null) return 1;
           if (y.price === null) return -1;
@@ -249,14 +248,14 @@ const sortByPrice = () => {
 
         document.getElementById("spinner").classList.add("hidden");
 
-        // Display sorted data
+        // Display SORTED DATA
         displayAllData(sortedPets);
       })
       .catch((error) => {
         console.error("Error fetching pets data:", error);
         document.getElementById("spinner").classList.add("hidden");
       });
-  }, 2000); // Delay of 4 seconds
+  }, 2000);
 };
 
 // NULL UNDEFINE VELUE REPLACE
@@ -272,13 +271,14 @@ menuBtn.addEventListener("click", () => {
 });
 
 // VIEW BUTTON
-
 const viewMoreBtn = document.getElementById("view-more-btn");
 const adoptSection = document.getElementById("adopt-section");
 
 viewMoreBtn.addEventListener("click", () => {
   adoptSection.scrollIntoView({ behavior: "smooth" });
 });
+
+// FUNCTION CALL
 loadDataByCategory();
 
 loadAlldata();
