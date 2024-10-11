@@ -1,15 +1,17 @@
 // LOAD ALL DATA
-
 const loadAlldata = async () => {
   const response = await fetch(
     `https://openapi.programming-hero.com/api/peddy/pets`
   );
   const data = await response.json();
-  console.log(data.pets);
-
-  displayAllData(data.pets);
+  const petsContainer = document.getElementById("pets-container");
+  petsContainer.innerHTML = "";
+  document.getElementById("spinner").classList.remove("hidden");
+  setTimeout(() => {
+    displayAllData(data.pets);
+  }, 2000);
 };
-
+// DISPALY DATA
 const displayAllData = (pets) => {
   document.getElementById("spinner").classList.add("hidden");
   const petsContainer = document.getElementById("pets-container");
@@ -69,8 +71,7 @@ const displayAllData = (pets) => {
   });
 };
 
-// LOAD categories
-
+// LOAD CATEGORY
 const loadDataByCategory = async () => {
   const response = await fetch(
     `https://openapi.programming-hero.com/api/peddy/categories`
@@ -85,11 +86,11 @@ const displayDataByCategory = (categories) => {
   categories.forEach((item) => {
     const categoryButton = document.createElement("button");
     categoryButton.className =
-      "w-5/12 max-w-[300px] h-auto p-4 md:p-6 border border-gray-400 rounded-2xl mb-4";
+      "w-5/12 max-w-[300px] h-auto p-4 md:p-6 border border-gray-400 rounded-2xl mb-4 hover:rounded-full  ";
 
     categoryButton.onclick = () => ByCategory(item.category);
     categoryButton.innerHTML = `
-        <div class="flex  md:flex-row justify-center items-center">
+        <div class="flex  md:flex-row justify-center items-center ">
     <img class="w-12 h-12 md:w-14 md:h-14" src="${item.category_icon}" alt="${item.name}">
     <h3 class="text-xl md:text-2xl font-bold text-center md:text-left">${item.category}</h3>
   </div>
@@ -117,26 +118,18 @@ const ByCategory = async (category) => {
   if (data.data.length === 0) {
     // Display "No Data Found" message if no pets are found
     petsContainer.innerHTML = `
-      <div class=" container mx-auto text-lg font-bold text-gray-500 h-80 border w-full rounded-2xl 
+      <div class=" container mx-auto text-lg font-bold text-gray-500 h-80 border w-full rounded-2xl  
         ">
             <img class="mx-auto mt-5  " src="images/error.webp" alt="">
             <p class="text-center"> No Data Available</p>
         </div>  
     `;
   } else {
-    // Display pets data
     displayAllData(data.data);
   }
 };
 
-loadDataByCategory();
-
-loadAlldata();
-// document.getElementById("sidePic").addEventListener("click", function (even) {
-//   even.preventDefault();
-//   console.log("helo");
-// });
-// ??????
+// IMG SIDE PART
 const getImg = (image) => {
   const sidePic = document.getElementById("sidePic");
   const creatAsideDiv = document.createElement("div");
@@ -213,6 +206,7 @@ const showDetails = async (petId) => {
   modal.showModal();
 };
 
+//  BIO MODAL PART
 const openModalWithCountdown = (button) => {
   document.getElementById("countdown-modal");
   const modal = document.getElementById("my_modal_2");
@@ -231,30 +225,60 @@ const openModalWithCountdown = (button) => {
   }, 1000);
 };
 
-// SHORT BY PRICE
+// SHORT BY PRICE AND SPINER
+
+// SHORT BY PRICE AND SPINNER
 
 const sortByPrice = () => {
   const petsContainer = document.getElementById("pets-container");
   petsContainer.innerHTML = "";
   document.getElementById("spinner").classList.remove("hidden");
-  setTimeout(function () {
-    displayAllData(data.data);
-  }, 3000);
-  fetch("https://openapi.programming-hero.com/api/peddy/pets")
-    .then((response) => response.json())
-    .then((data) => {
-      const pets = data.pets;
 
-      const sortedPets = pets.sort((x, y) => {
-        if (x.price === null) return 1;
-        if (y.price === null) return -1;
-        return y.price - x.price;
+  setTimeout(() => {
+    fetch("https://openapi.programming-hero.com/api/peddy/pets")
+      .then((response) => response.json())
+      .then((data) => {
+        const pets = data.pets;
+
+        // Sort pets by price, handling null values
+        const sortedPets = pets.sort((x, y) => {
+          if (x.price === null) return 1;
+          if (y.price === null) return -1;
+          return y.price - x.price;
+        });
+
+        document.getElementById("spinner").classList.add("hidden");
+
+        // Display sorted data
+        displayAllData(sortedPets);
+      })
+      .catch((error) => {
+        console.error("Error fetching pets data:", error);
+        document.getElementById("spinner").classList.add("hidden");
       });
-      displayAllData(sortedPets);
-    })
-    .catch((error) => console.error("Error fetching pets data:", error));
+  }, 2000); // Delay of 4 seconds
 };
-// Utility function to handle null or undefined values
+
+// NULL UNDEFINE VELUE REPLACE
 const getValueOrDefault = (value) => {
   return value !== null && value !== undefined ? value : "No Available Data";
 };
+
+const menuBtn = document.getElementById("menu-btn");
+const mobileMenu = document.getElementById("mobile-menu");
+
+menuBtn.addEventListener("click", () => {
+  mobileMenu.classList.toggle("hidden");
+});
+
+// VIEW BUTTON
+
+const viewMoreBtn = document.getElementById("view-more-btn");
+const adoptSection = document.getElementById("adopt-section");
+
+viewMoreBtn.addEventListener("click", () => {
+  adoptSection.scrollIntoView({ behavior: "smooth" });
+});
+loadDataByCategory();
+
+loadAlldata();
